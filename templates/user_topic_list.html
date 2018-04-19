@@ -1,0 +1,39 @@
+{% extends "base.html" %}
+
+{% block title %}{{user.email}} User - topic list{% endblock %}
+
+{% block content %}
+<div class="jumbotron">
+  <h1>Ninja tech forum</h1>
+  <p>Welcome to Ninja Tech Forum - the best forum for tech fans. Coming soon!</p>
+</div>
+
+
+
+<div class="container-fluid">
+  <table class="table table-hover">
+    <thead>
+      <tr class="bg-primary">
+        <th>AUTHOR</th>
+        <th class="text-center">TOPIC</th>
+        <th class="text-right">DATE / TIME</th>
+      </tr>
+    </thead>
+
+    <tbody>
+
+      {% for topic in topics %}
+      {% if topic.author_email == u.email %}
+      <tr onclick="window.location='/topic/{{ topic.key.id() }}/details';" class="table">
+          <td class="ellipsis">{{topic.author_email}}</td>
+          <td class="ellipsis text-center">{{topic.title}}</td>
+          <td class="text-right ellipsis">{{topic.created.strftime('%d-%m-%Y/%H:%M')}}</td>
+      </tr>
+      {% endif %}
+      {% endfor %}
+
+    </tbody>
+  </table>
+</div>
+
+{% endblock %}

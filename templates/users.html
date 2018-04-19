@@ -1,0 +1,33 @@
+{% extends "base.html" %}
+
+{% block title %}Users{% endblock %}
+
+{% block content %}
+<div class="jumbotron">
+  <h1>Ninja tech forum users</h1>
+</div>
+
+<div class="container-fluid">
+  <table class="table table-hover">
+    <thead>
+      <tr class="bg-primary">
+        <th>USER</th>
+        <th class="text-center">USER TOPICS</th>
+        <th class="text-center">USER COMMENTS</th>
+        <th class="text-right">JOINED</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for user in contact_list %}
+      <tr>
+          <td class="ellipsis">{{user.email}}</td>
+          <td class="text-center"><a href="/user/{{ user.key.id() }}/user_topic_list"><button>Topics</button></a></td> <!--href="/user/{{ user.key.id() }}/user_topic_list"-->
+          <td class="text-center"><a href="/user/{{ user.key.id() }}/user_comments_list"><button>Comments</button></a></td>
+          <td class="text-right ellipsis">{{user.created.strftime('%d-%m-%Y/%H:%M')}}</td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+
+{% endblock content %}
