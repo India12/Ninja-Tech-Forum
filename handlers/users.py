@@ -47,10 +47,10 @@ class DeleteUserProfileHandler(BaseHandler):
         user = users.get_current_user()
         user_profile = User.get_by_id(int(user_id))
 
-        if user_profile.email == user.email():
+        if user_profile.email == user.email() or users.is_current_user_admin():
             User.delete_profile(user_profile=user_profile)
 
-        return self.redirect_to("user-profile")
+        return self.redirect_to("main-page")
 
 class LatestTopicsSubscribeHandler(BaseHandler):
     @validate_csrf
