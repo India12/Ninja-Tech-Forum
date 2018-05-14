@@ -56,3 +56,5 @@ class User(ndb.Model):
 	def delete_profile(cls, user_profile):
 		user_profile.deleted = True
 		user_profile.key.delete()
+		
+		#return user_profile
