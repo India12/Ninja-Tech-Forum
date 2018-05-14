@@ -1,0 +1,83 @@
+{% extends "base.html" %}
+{% block title %}profile - {{user.email()}}{% endblock title%}
+{% block content %}
+
+<!-- PROFILE -->
+<br />
+<div class="row">
+  <div class="col-md-10 col-md-offset-1">
+    {% if user_profile %}
+    <h4 class="panel">PROFILE:</h4>
+    <br />
+
+    <h3 class="panel-title">First name: {{user_profile.first_name}}</h3>
+    <h3 class="panel-title">Last name: {{user_profile.last_name}}</h3>
+    <h3 class="panel-title">Email: {{user_profile.email}}</h3>
+
+{% if user.email() == user_profile.email %}
+    <div class="panel-footer text-right">
+      <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#edit-profile">Edit profile</button>
+      <button type="button" class="btn btn-primary active" data-toggle="modal" data-target="#delete-profile">Delete profile</button>
+    </div>
+{% endif %}
+  </div>
+</div>
+
+<!--Modal: edit profile -->
+<div class="modal fadedown" id="edit-profile" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Edit profile!</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <form action="/profile/{{user_profile.key.id()}}/edit" method="post">
+        <input type="hidden" name="csrf_token" value="{{csrf_token}}">
+        <div class="modal-body">
+          <div class="form-group">
+            <label>First name:</label>
+            <input class="form-control" name="first_name" value="{{user_profile.first_name}}" placeholder="">
+          </div>
+          <div class="form-group">
+            <label>Last name:</label>
+            <input class="form-control" name="last_name" value="{{user_profile.last_name}}" placeholder="">
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+          <button type="submit" class="btn btn-danger">Save changes</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+<!--End modal: edit profile -->
+<!--Modal: delete profile -->
+<div class="modal fadedown" id="delete-profile" tabindex="-1" role="dialog" aria-labelledby="DeleteTopicLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Delete profile!</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <h4>Are you sure you want to delete your profile?</h4>
+      </div>
+      <div class="modal-footer">
+        <form action="/profile/{{user_profile.key.id()}}/delete" method="post">
+          <input type="hidden" name="csrf_token" value="{{csrf_token}}">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+          <button type="submit" class="btn btn-danger" id="delete_redirect">Delete profile</button>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+<!--End modal: delete profie -->
+<!-- END PROFILE -->
+{% endif %}
+{% endblock content %}

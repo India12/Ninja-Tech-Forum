@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+{% block title %}profile - {{user.email()}}{% endblock title%}
+{% block content %}
+
+<!-- PROFILE -->
+<br />
+<div class="row">
+  <div class="col-md-10 col-md-offset-1">
+    {% if user_profile %}
+    <h4 class="panel">PROFILE:</h4>
+    <br />
+
+    <h3 class="panel-title">First name: {{user_profile.first_name}}</h3>
+    <h3 class="panel-title">Last name: {{user_profile.last_name}}</h3>
+    <h3 class="panel-title">Email: {{user_profile.email}}</h3>
+
+
+    <div class="panel-footer text-right">
+        <h1>Your profile is now deleted, press OK to log out!</h1>
+        <a href="{{logout_url}}" class="btn btn-primary active" role="button">OK</a>
+    </div>
+
+  </div>
+</div>
+
+
+<!-- END PROFILE -->
+{% endif %}
+{% endblock content %}
