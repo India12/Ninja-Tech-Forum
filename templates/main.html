@@ -3,51 +3,27 @@
 {% block title %}Main page{% endblock %}
 
 {% block content %}
-<div class="jumbotron">
+<div class="jumbotron ">
   <h1>Ninja tech forum</h1>
-  <p>Welcome to Ninja Tech Forum - the best forum for tech fans. Coming soon!</p>
-</div>
-
+  <h3>Welcome to Ninja Tech Forum - the best forum for tech fans.</h3>
 {% if user %}
-<div class="text-center">
-  <button type="button" class="btn text-right subscribe" data-toggle="modal" data-target="#subscribe-to-news">
-    SUBSCRIBE TO NEWS!
-  </button>
-</div>
-
-<!-- Modal: subscribe to news -->
-<div class="modal fade" id="subscribe-to-news" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-  <div class="modal-dialog" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title">Confirm your email for subscription!</h5>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button>
-      </div>
-      <form class="form-group" method="post" action="/cron/send-email">
-        <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
-        <div class="modal-body form-group">
-          <input class="form-control" name="subscription_email" value="{{user.email()}}" type="text" placeholder="Enter your email address." required>
-        </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-          <button type="submit" class="btn btn-primary">Subscribe</button>
-        </div>
-      </form>
-    </div>
+  <div class="content hideContent">
+    Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec at neque id sem efficitur interdum et vel odio. Pellentesque convallis sapien urna, vitae bibendum augue fringilla vitae. Pellentesque dictum interdum dolor vel aliquam. Proin pellentesque metus vitae ipsum commodo, ut porta purus commodo. Integer sed eros sed tortor luctus egestas id eget felis. Ut hendrerit placerat dignissim. Cras molestie urna eros, et ullamcorper risus faucibus ut. Nulla fermentum vestibulum nisi sit amet aliquet.
   </div>
+  <div class="show-more">
+    <a href="#">Show more</a>
+  </div>
+{% endif %}
 </div>
-<!-- End modal: subscribe to news -->
-{% else %}
 
+{% if not user %}
 <div class="text-center">
-  <button type="button" class="btn text-right subscribe" data-toggle="modal" data-target="#subscribe-non-user">
-    SUBSCRIBE TO NEWS!
+  <button type="button" class="btn text-center subscribe" data-toggle="modal" data-target="#subscribe-non-user">
+    <p class="h3 text-center">SUBSCRIBE TO LATEST TOPICS!</p>
   </button>
 </div>
 <!-- Modal: subscribe - non user -->
-<div class="modal fade" id="subscribe-non-user" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+<div class="modal fadedown" id="subscribe-non-user" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
   <div class="modal-dialog" role="document">
     <div class="modal-content">
       <div class="modal-header">
@@ -63,12 +39,13 @@
   </div>
 </div>
 </div>
-<!-- End modal: subscribe non user -->
+<!--End modal: subscribe non user-->
 {% endif %}
 
 <br />
+<br />
 <div class="container-fluid">
-  <table class="table table-hover">
+  <table id="topicTable" class="table table-hover">
     <thead>
       <tr class="bg-primary">
         <th>AUTHOR</th>
@@ -81,7 +58,7 @@
       <tr onclick="window.location='/topic/{{ topic.key.id() }}/details';" class="table">
         <td class="ellipsis">{{topic.author_email}}</td>
         <td class="ellipsis">{{topic.title}}</td>
-        <td class="text-right ellipsis">{{topic.created.strftime('%d-%m-%Y/%H:%M')}}</td>
+        <td class="text-right ellipsis">{{topic.created.strftime('%Y/%m/%d; %H:%M')}}</td>
       </tr>
       {% endfor %}
     </tbody>

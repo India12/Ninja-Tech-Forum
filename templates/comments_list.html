@@ -1,33 +1,52 @@
 {% extends "base.html" %}
 
-{% block title %}Comment-list{% endblock %}
+{% block title %}User - comment list{% endblock %}
 
 {% block content %}
-{% for title in topics_titles %}
-<div class="container-fluid">
-  <table class="table table-hover">
-    <thead>
+<br />
+<h1>My comments:</h1>
+<br />
+<br />
 
+<div class="container-fluid">
+  <table id="mycomments-table" class="table table-hover">
+    <thead>
       <tr class="bg-primary">
-        <th class="text-left ellipsis">Topic - Title:  {{title|upper}}</th>
+        <th class="text-left ellipsis">In topic:</th>
+        <th>Content</th>
         <th class="text-right">DATE / TIME</th>
       </tr>
-
     </thead>
-
     <tbody>
+
+{% for title in topics_titles %}
+  <!--  for comments to be grouped under corresponding topic, but then table doesn't work right!:
+      <tr>
+        <td colspan="" class="text-left ellipsis bg-light">{{title|upper}}</td>
+        <td></td>
+        <td></td>
+      </tr>-->
       {% for comment in comments %}
       {% if comment.topic_title == title %}
       <tr onclick="window.location='/topic/{{ comment.topic_id }}/details';" class="table">
-          <td class="ellipsis">TEXT:  {{comment.content}}</td>
-          <td class="text-right ellipsis">{{comment.created.strftime("%d.%m.%Y at %H:%M")}}</td>
+          <td class="text-left ellipsis bg-light">{{title|upper}}</td>
+          <td class="ellipsis">{{comment.content}}</td>
+          <td class="text-right ellipsis">{{comment.created.strftime("%Y/%m/%d at %H:%M")}}</td>
       </tr>
       {% endif %}
       {% endfor %}
-    </tbody>
-  </table>
-</div>
 {% else %}
 <p>No comments yet!</p>
 {% endfor %}
+
+    </tbody>
+  </table>
+</div>
+
+
+<hr>
+<br />
+<div class="text-center">
+<button class="btn btn-primary" type="button" onclick="history.back();"><spam class="h4">Back</spam></button>
+</div>
 {% endblock content %}

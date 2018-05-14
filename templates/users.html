@@ -3,12 +3,12 @@
 {% block title %}Users{% endblock %}
 
 {% block content %}
-<div class="jumbotron">
+<br />
   <h1>Ninja tech forum users</h1>
-</div>
-
+<br />
+<br />
 <div class="container-fluid">
-  <table class="table table-hover">
+  <table id="users-table" class="table table-hover">
     <thead>
       <tr class="bg-primary">
         <th>USER</th>
@@ -18,16 +18,24 @@
       </tr>
     </thead>
     <tbody>
+
       {% for user in contact_list %}
       <tr>
-          <td class="ellipsis">{{user.email}}</td>
+          <td class="ellipsis"><a href="/profile/{{ user.key.id() }}/edit">{{user.email}}</a></td>
           <td class="text-center"><a href="/user/{{ user.key.id() }}/user_topic_list"><button>Topics</button></a></td> <!--href="/user/{{ user.key.id() }}/user_topic_list"-->
           <td class="text-center"><a href="/user/{{ user.key.id() }}/user_comments_list"><button>Comments</button></a></td>
           <td class="text-right ellipsis">{{user.created.strftime('%d-%m-%Y/%H:%M')}}</td>
       </tr>
+      {% else %}
+      <p>No topics yet!</p>
       {% endfor %}
     </tbody>
   </table>
+  <hr>
+  <br />
+  <div class="text-center">
+    <button class="btn btn-primary" type="button" onclick="history.back();"><spam class="h4">Back</spam></button>
+  </div>
 </div>
 
 {% endblock content %}

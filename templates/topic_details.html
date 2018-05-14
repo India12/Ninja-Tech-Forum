@@ -4,10 +4,10 @@
 
 <!-- TOPIC-->
 <div class="row">
-  <div class="col-md-8 col-md-offset-2">
+  <div class="col-md-11">
     <h4>TOPIC</h4>
-    <div class="panel panel-info">
-      <div class="panel-heading  title-topic">{{topic.author_email}}, {{topic.created.strftime('%d-%m-%Y/%H:%M')}}</div>
+    <div class="panel panel-primary">
+      <div class="panel-heading title-topic">{{topic.author_email}}, {{topic.created.strftime('%d-%m-%Y/%H:%M')}}</div>
       <div class="panel-title">
         <h4>{{topic.title}}</h4>
       </div>
@@ -15,16 +15,15 @@
         <p>{{topic.content}}</p>
       </div>
 
-
       {% if user %}
       {% if topic.author_email == user.email() or user.admin %}
 
       <div class="panel-footer text-right">
-        <a type="button" class="btn btn-warning" data-toggle="modal" data-target="#edit-topic">Edit topic</a>
-        <a type="button" class="btn btn-danger" data-toggle="modal" data-target="#delete-topic">Delete topic</a>
+        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#edit-topic">Edit</button>
+        <button type="button" class="btn btn-primary active" data-toggle="modal" data-target="#delete-topic">Delete</button>
       </div>
       <!--Modal: edit topic -->
-      <div class="modal fade" id="edit-topic" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+      <div class="modal fadedown" tabindex="-1" role="dialog" id="edit-topic" tabindex="-1" role="dialog" aria-labelledby="editTopicLabel" aria-hidden="true">
         <div class="modal-dialog" role="document">
           <div class="modal-content">
             <div class="modal-header">
@@ -33,10 +32,14 @@
                 <span aria-hidden="true">&times;</span>
               </button>
             </div>
+
             <form action="/topic/{{topic.key.id()}}/edit" method="post">
               <input type="hidden" name="csrf_token" value="{{csrf_token}}">
               <div class="modal-body">
-                <textarea name="content" rows="8" cols="80">{{topic.content}}</textarea>
+                <textarea name="title" rows="3" cols="64">{{topic.title}}</textarea>
+              </div>
+              <div class="modal-body">
+                <textarea name="content" rows="8" cols="64">{{topic.content}}</textarea>
               </div>
               <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
@@ -47,14 +50,9 @@
         </div>
       </div>
       <!--End modal: edit topic -->
-      {% endif %}
-      {% endif %}
-
-      {% if user %}
-      {% if topic.author_email == user.email() or user.admin %}
 
       <!--Modal: delete topic -->
-      <div class="modal fade" id="delete-topic" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+      <div class="modal fadedown" id="delete-topic" tabindex="-1" role="dialog" aria-labelledby="DeleteTopicLabel" aria-hidden="true">
         <div class="modal-dialog" role="document">
           <div class="modal-content">
             <div class="modal-header">
@@ -71,7 +69,7 @@
               <form action="/topic/{{topic.key.id()}}/delete" method="post">
                 <input type="hidden" name="csrf_token" value="{{csrf_token}}">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                <button type="submit" class="btn btn-danger">Save changes</button>
+                <button type="submit" class="btn btn-danger">Delete topic</button>
               </form>
             </div>
           </div>
@@ -85,17 +83,18 @@
   </div>
 </div>
 <!--END TOPIC-->
-<hr>
+<br />
+<br />
 <!-- COMMENTS -->
 <div class="row">
-  <div class="col-md-8 col-md-offset-2">
+  <div class="col-md-11">
     <h4>COMMENTS</h4>
   </div>
 </div>
 {% for comment in comments %}
 <div class="row">
-  <div class="col-md-8 col-md-offset-2">
-    <div class="panel panel-warning">
+  <div class="col-md-11">
+    <div class="panel panel-info">
       <div class="panel-heading">
         <h3 class="panel-title">{{comment.author_email}} on {{comment.created.strftime("%d.%m.%Y at %H:%M")}}</h3>
       </div>
@@ -106,14 +105,15 @@
 
       {% if user %}
       {% if comment.author_email == user.email() or user.admin %}
-
       <div class="panel-footer text-right">
-        <a type="button" class="btn btn-warning" data-toggle="modal" data-target="#edit-comment{{comment.key.id()}}">Edit comment</a>
-        <a type="button" class="btn btn-danger" data-toggle="modal" data-target="#delete-comment{{comment.key.id()}}">Delete comment</a>
+        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#edit-comment{{comment.key.id()}}">Edit</button>
+        <button type="button" class="btn btn-primary active" data-toggle="modal" data-target="#delete-comment{{comment.key.id()}}">Delete</button>
       </div>
+      {% endif %}
+      {% endif %}
 
       <!--Modal: edit comment -->
-      <div class="modal fade" id="edit-comment{{comment.key.id()}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+      <div class="modal fadedown" id="edit-comment{{comment.key.id()}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
         <div class="modal-dialog" role="document">
           <div class="modal-content">
             <div class="modal-header">
@@ -125,7 +125,7 @@
             <form action="/comment/{{comment.key.id()}}/edit" method="post">
               <input type="hidden" name="csrf_token" value="{{csrf_token}}">
               <div class="modal-body">
-                <textarea name="content" rows="8" cols="75">{{comment.content}}</textarea>
+                <textarea name="content" rows="8" cols="64">{{comment.content}}</textarea>
               </div>
               <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
@@ -136,14 +136,9 @@
         </div>
       </div>
       <!--End modal: edit comment -->
-      {% endif %}
-      {% endif %}
-
-      {% if user %}
-      {% if comment.author_email == user.email() or user.admin %}
 
       <!--Modal: delete comment -->
-      <div class="modal fade" id="delete-comment{{comment.key.id()}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+      <div class="modal fadedown" id="delete-comment{{comment.key.id()}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
         <div class="modal-dialog" role="document">
           <div class="modal-content">
             <div class="modal-header">
@@ -169,31 +164,30 @@
     </div>
   </div>
 </div>
-{% endif %}
-{% endif %}
 {% endfor %}
 <!-- END COMMENTS -->
 
 <!-- ADD COMMENT -->
 <div class="row">
-  <div class="col-md-8 col-md-offset-2">
+  <div class="col-md-11">
     <div class="panel panel-success">
       <div class="panel-heading">
         <h3 class="panel-title">Add new comment</h3>
       </div>
 
       <div class="panel-body">
-        <form action="/topic/{{topic.key.id()}}/comment/add" method="post">
+        <form action="/topic/{{topic.key.id()}}/comment/add" method="post" class="text-right">
           <input type="hidden" name="csrf_token" value="{{csrf_token}}">
 
           <div class="form-group">
             <textarea name="comment-text" class="form-control" rows="6" required></textarea>
           </div>
 
-          <button type="submit" class="btn btn-success">Submit comment</button>
+          <button type="submit" class="btn btn-success" data-toggle="modal" data-target="#comment-non-user">Submit comment</button>
         </form>
       </div>
     </div>
   </div>
 </div> <!-- END ADD COMMENT -->
+
 {% endblock content %}

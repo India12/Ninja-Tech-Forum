@@ -11,46 +11,35 @@
   <!-- Bootstrap -->
   <link href="/assets/bootstrap/css/bootstrap.css" rel="stylesheet">
   <link href="/assets/custom/css/style.css" rel="stylesheet">
+  <link href="/assets/bootstrap/css/bootstrap.min.css" rel="stylesheet">
 </head>
 
 <body>
   <div class="container">
-    <nav class="navbar navbar-default">
-      <div class="container-fluid">
+    <nav class="navbar navbar-expand-md navbar-dark bg-dark">
+      <div class="container">
         <!-- Brand and toggle get grouped for better mobile display -->
-        <div class="navbar-header">
-          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
-            <span class="sr-only">Toggle navigation</span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-          </button>
-          <a class="navbar-brand" href="/">Ninja Tech Forum</a>
-        </div>
+        <a class="navbar-brand mb-0 h2" href="/">Ninja Tech Forum</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
 
         <!-- Collect the nav links, forms, and other content for toggling -->
-        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-          <ul class="nav navbar-nav navbar-right">
-            <li><a href="/">About</a></li>
-
-            {% if user %} <!-- if logout_url -->
-              <li><a href="/topic/add">Add new topic</a></li>
-              <li><a href="/comments/list">{{ user.email() }}</a></li>
-              <li><a href="{{ logout_url }}">Logout</a></li>
-              <li><a href="/users">Users</a></li>
-            {% else %} <!-- elif login_url -->
-              <li><a href="{{ login_url }}">Login</a></li>
+        <div class="collapse navbar-collapse " id="navbarResponsive">
+          <ul class="nav navbar-nav ml-auto">
+            <li class="nav-item top-navbar-color"><a href="/">About</a></li>
+            <li class="nav-item top-navbar-color"><a href="#faq">FAQ</a></li>
+            {% if logout_url %} <!-- if user -->
+            <li class="nav-item top-navbar-color"><a href="/topic/add">Add new topic</a></li>
+            <li class="nav-item top-navbar-color"><a href="/user-profile">{{ user.email() }}</a></li>
+            <li class="nav-item top-navbar-color"><a href="{{ logout_url }}">Logout</a></li>
+            <li class="nav-item top-navbar-color"><a href="/users">Users</a></li>
+            {% elif login_url %} <!-- else -->
+            <li class="nav-item top-navbar-color"><a href="{{ login_url }}">Login</a></li>
             {% endif %}
-
-              
-            <!--{% if admin %}-->
-              <li><a href="#">Users</a></li>
-            <!--{% endif %}-->
-
-
           </ul>
-        </div><!-- /.navbar-collapse -->
-      </div><!-- /.container-fluid -->
+        </div><!-- /.container-fluid -->
+      </div><!-- /.navbar-collapse -->
     </nav>
 
     {% if not cookies %}
@@ -64,14 +53,251 @@
     <!--Add stuff that create cookies here, like Google Analytics or Facebook Pixel.-->
     {% endif %}
 
-    {% block content %}{% endblock content %}
+    <div class="container">
+      <div class="row">
+        <!-- Blog Entries Column -->
+        <div class="col-md-8">
+          {% block content %}
+          {% endblock content %}
+        </div>
+        <!-- Sidebar Column -->
+        <div class="col-md-4">
+          {% if not user %}
+          <!-- About us -->
+          <div class="card my-4">
+            <h5 class="card-header">About Ninja Tech Forum</h5>
+            <div class="card-body">
+              Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s. Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s. Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s.Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s. Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s. Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s.
+            </div>
+          </div>
+          {% else %}
+          <div class="card my-4">
+            <h5 class="card-header text-right">Dashboard</h5>
+            <div class="card-body">
+              <ul class="nav flex-column">
+                <li class="nav-item text-right">
+                  <a class="nav-link pl-0" href="/topic/add">Add Topic</a>
+                </li>
+                <li class="nav-item text-right">
+                  <a class="nav-link pl-0" href="/topics/list">My Topics</a>
+                </li>
+                <li class="nav-item text-right">
+                  <a class="nav-link pl-0" href="/comments/list">My Comments</a>
+                </li>
+                <li class="nav-item text-right">
+                  <a class="nav-link pl-0" href="/users">Users contributions</a>
+                </li>
+              </ul>
+              <hr>
 
+              <!-- (un)subscribe button -->
+              {% if topic_subscriber %}
+              {% if not topic_subscriber.is_subscribed %}
+              <div class="text-right">
+                <button type="button" class="btn btn-success" data-toggle="modal" data-target="#subscribe-to-news">
+                  SUBSCRIBE TO LATEST TOPICS! <!--why does this button appear with delay?-->
+                </button>
+              </div>
+              {% else %}
+              <div class="text-right">
+                <button type="button" class="btn btn-success" data-toggle="modal" data-target="#unsubscribe-from-news">
+                  UNSUBSCRIBE! <!--why does this button appear with delay?-->
+                </button>
+              </div>
+              {% endif %}
+
+              <!--Modal: subscribe to latest topics-->
+              <div class="modal fadedown" id="subscribe-to-news" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                <div class="modal-dialog" role="document">
+                  <div class="modal-content">
+                    <div class="modal-header">
+                      <h5 class="modal-title">Confirm your email for subscription!</h5>
+                      <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                      </button>
+                    </div>
+                    <form class="" method="post" action="/latest_topics/subscribe"> <!--alternative version-subscribe/unsubscribe: /latest_topics/{{topic_subscriber.key.id()}}/subscribe-->
+                      <input type="hidden" name="csrf_token" value="{{csrf_token}}">
+                      <div class="modal-body ">
+                        {{topic_subscriber.email}}
+                      </div>
+                      <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                        <button type="submit" class="btn btn-primary">Subscribe</button>
+                      </div>
+                    </form>
+                  </div>
+                </div>
+              </div>
+              <!--End modal: subscribe to latest topics-->
+
+              <!--Modal: unsubscribe from latest topics-->
+              <div class="modal fadedown" id="unsubscribe-from-news" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                <div class="modal-dialog" role="document">
+                  <div class="modal-content">
+                    <div class="modal-header">
+                      <h5 class="modal-title">Are you sure you want to unsubscribe from latest topics?</h5>
+                      <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                      </button>
+                    </div>
+                    <form class="" method="post" action="/latest_topics/unsubscribe"> <!--alternative version-subscribe/unsubscribe: /latest_topics/{{topic_subscriber.key.id()}}/unsubscribe-->
+                      <input type="hidden" name="csrf_token" value="{{csrf_token}}">
+                      <div class="modal-body ">
+                        {{topic_subscriber.email}}
+                      </div>
+                      <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                        <button type="submit" class="btn btn-primary">Unsubscribe</button>
+                      </div>
+                    </form>
+                  </div>
+                </div>
+              </div>
+              {% endif %}
+              <!--End modal: unsubscribe from latest topics-->
+
+            </div>
+          </div>
+          <br />
+{% endif %}
+          <!--Ads section-->
+          <div class="card my-4">
+            <h5 class="card-header text-right">Ads</h5>
+            <div class="card-body">
+              <ul class="nav flex-column">
+                <li class="nav-item text-right">
+                  <a class="nav-link pl-0" href="#">Ad 1</a>
+                </li>
+                <li class="nav-item text-right">
+                  <a class="nav-link pl-0" href="#">Ad 2</a>
+                </li>
+                <li class="nav-item text-right">
+                  <a class="nav-link pl-0" href="#">Ad 3</a>
+                </li>
+                <li class="nav-item text-right">
+                  <a class="nav-link pl-0" href="#">Ad 4</a>
+                </li>
+                <li class="nav-item text-right">
+                  <a class="nav-link pl-0" href="#">Ad 5</a>
+                </li>
+              </ul>
+            </div>
+          </div>
+          <!-- End ads section-->
+        </div>
+        <!-- /.row -->
+      </div>
+    </div>
+    <!-- /.container -->
+
+    <!-- FAQ -->
+    <br />
+    <br />
+    <hr />
+    <br />
+    <div class="container" id="faq">
+      <h1 class="text-center">FAQ</h1>
+      <br />
+      <div class="panel-group" id="accordion">
+        <div class="panel panel-default">
+          <div class="panel-heading">
+            <h4 class="panel-title">
+              <a data-toggle="collapse" data-parent="#accordion" href="#collapse1">Lorem ipsum dolor sit amet, velit sodales feugiat nec?</a>
+            </h4>
+          </div>
+          <div id="collapse1" class="panel-collapse collapse in">
+            <div class="panel-body">Tempor ut nam. Cursus metus rhoncus voluptas, venenatis integer, et vestibulum fusce velit dui id sed, augue turpis sodales porttitor commodo, nullam ante phasellus in id dolor in. Suscipit dolor nunc orci justo vel. Ac sollicitudin sapien lacus vitae, felis neque ut sit, ullamcorper egestas vestibulum quis viverra at, platea tempor convallis morbi felis nec tortor, nam ante aliquet phasellus sed a nulla. Justo vitae velit amet ultrices, nec dolor eget, at tincidunt nullam dolor consectetuer tristique, nulla turpis.</div>
+          </div>
+        </div>
+        <div class="panel panel-default">
+          <div class="panel-heading">
+            <h4 class="panel-title">
+              <a data-toggle="collapse" data-parent="#accordion" href="#collapse2">Lorem ipsum dolor sit amet, velit sodales feugiat nec?</a>
+            </h4>
+          </div>
+          <div id="collapse2" class="panel-collapse collapse">
+            <div class="panel-body">Tempor ut nam. Cursus metus rhoncus voluptas, venenatis integer, et vestibulum fusce velit dui id sed, augue turpis sodales porttitor commodo, nullam ante phasellus in id dolor in. Suscipit dolor nunc orci justo vel. Ac sollicitudin sapien lacus vitae, felis neque ut sit, ullamcorper egestas vestibulum quis viverra at, platea tempor convallis morbi felis nec tortor, nam ante aliquet phasellus sed a nulla. Justo vitae velit amet ultrices, nec dolor eget, at tincidunt nullam dolor consectetuer tristique, nulla turpis.</div>
+          </div>
+        </div>
+        <div class="panel panel-default">
+          <div class="panel-heading">
+            <h4 class="panel-title">
+              <a data-toggle="collapse" data-parent="#accordion" href="#collapse3">Lorem ipsum dolor sit amet, velit sodales feugiat nec?</a>
+            </h4>
+          </div>
+          <div id="collapse3" class="panel-collapse collapse">
+            <div class="panel-body">Tempor ut nam. Cursus metus rhoncus voluptas, venenatis integer, et vestibulum fusce velit dui id sed, augue turpis sodales porttitor commodo, nullam ante phasellus in id dolor in. Suscipit dolor nunc orci justo vel. Ac sollicitudin sapien lacus vitae, felis neque ut sit, ullamcorper egestas vestibulum quis viverra at, platea tempor convallis morbi felis nec tortor, nam ante aliquet phasellus sed a nulla. Justo vitae velit amet ultrices, nec dolor eget, at tincidunt nullam dolor consectetuer tristique, nulla turpis.</div>
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
+  <br />
+  <br />
 
+  <!-- Footer -->
+  <footer class=" navbar-bottom">
+    <div class="container">
+      <div class="row col-md-offset-1">
+        <div class="col-md-4" id="kontakt">
+          <h3>Contact</h3>
+          <p>SmartNinja d.o.o.</p>
+          <p>Kersnikova ulica 10</p>
+          <p>1000 Ljubljana</p>
+          <br>
+          <p>Phone number: 030 555 555
+            <p>E-mail: smartninja@smartninja.com
+              <br>
+              <p>Tax number: 5689324</p>
+              <p>Registration number: 8569345000</p>
+            </div>
 
-  <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
-  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
-  <!-- Include all compiled plugins (below), or include individual files as needed -->
-  <script src="/assets/bootstrap/js/bootstrap.js"></script>
-</body>
-</html>
+            <div class="col-md-4">
+              <img class="img-responsive logo" src="/assets/custom/pictures/smart_ninja_black.png" alt="logo">
+            </div>
+
+            <div class="col-md-4 navigacija-bottom">
+              <ul class="list-group text-rigth"><br />
+                <li><h3>Navigation</h3></li><br />
+                <li><a class="decoration" href="/">About</a></li>
+                <li><a class="decoration" href="#faq">FAQ</a></li>
+                {% if user %}
+                <li><a class="decoration" href="/topic/add">Add new topic</a></li>
+                <li><a class="decoration" href="/users">Users</a></li>
+                {% endif %}
+                <br /><br /><br /><br />
+                <li>
+                  <a href="#"> <img src="/assets/custom/pictures/facebook.png" alt="facebook"></a>
+                  <a href="#"> <img src="/assets/custom/pictures/twitter.png" alt="twitter"></a>
+                  <a href="#"> <img src="/assets/custom/pictures/instagram.png" alt="instagram"></a>
+                  <a href="#"> <img src="/assets/custom/pictures/youtube.png" alt="youtube"></a>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+        <div class="container">
+          <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2768.7381383972042!2d14.502251915989108!3d46.05632117911242!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x4765329e5f4d5f55%3A0x410a55e9f3e5a631!2sKersnikova+ulica+10%2C+1000+Ljubljana!5e0!3m2!1ssl!2ssi!4v1507471219654" class="map" allowfullscreen></iframe>
+        </div>
+      </footer>
+
+      <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+      <!-- Include all compiled plugins (below), or include individual files as needed -->
+      <script src="/assets/bootstrap/js/bootstrap.js"></script>
+
+      <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.0/jquery.min.js"></script>
+      <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js"></script>
+
+      <!--Datatable -->
+      <script type="text/javascript" src="/assets/custom/js/script.js"></script>
+      <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.0.0/css/bootstrap.css">
+      <link rel="stylesheet" href="https://cdn.datatables.net/1.10.16/css/dataTables.bootstrap4.min.css">
+
+      <!--      <script src="https://code.jquery.com/jquery-1.12.4.js"></script>  show more/less in main.html is not working if this enabled-->
+      <script src="https://cdn.datatables.net/1.10.16/js/jquery.dataTables.min.js"></script>
+      <script src="https://cdn.datatables.net/1.10.16/js/dataTables.bootstrap4.min.js"></script>
+
+    </body>
+    </html>

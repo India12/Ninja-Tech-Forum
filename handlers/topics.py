@@ -8,7 +8,7 @@ from utils.decorators import validate_csrf
 
 class TopicAdd(BaseHandler):
     def get(self):
-        return self.render_template_with_csrf("topic_add.html")
+        return self.render_template("topic_add.html")
 
     @validate_csrf
     def post(self):
@@ -28,7 +28,7 @@ class TopicDetails(BaseHandler):
 
         params = {"topic": topic, "comments": comments}
 
-        return self.render_template_with_csrf("topic_details.html", params=params)
+        return self.render_template("topic_details.html", params=params)
 
 class EditTopic(BaseHandler):
     @validate_csrf   #I'm evil attacker!!??
@@ -38,7 +38,9 @@ class EditTopic(BaseHandler):
 
         if topic.author_email == user.email() or users.is_current_user_admin():
             content = self.request.get("content")
+            title = self.request.get("title")
             topic.content = content
+            topic.title = title
             topic.put()
 
         return self.redirect_to("topic-details", topic_id=topic.key.id())
@@ -54,10 +56,19 @@ class TopicDelete(BaseHandler):
 
         return self.redirect_to("main-page")
 
+class TopicList(BaseHandler):
+    def get(self):
+        user = users.get_current_user()
+        topics = Topic.query(Topic.deleted == False, Topic.author_email == user.email()).order(-Topic.created).fetch()
+
+        params = {"topics":topics}
+
+        return self.render_template('topic_list.html', params=params)
+
 class UserTopicList(BaseHandler):
     def get(self, user_id):
         u = User.get_by_id(int(user_id))
-        topics = Topic.query(Topic.deleted == False).order(-Topic.created).fetch()
+        topics = Topic.query(Topic.deleted == False, Topic.author_email == u.email).order(-Topic.created).fetch()
 
         params = {"topics":topics, "u":u}
 

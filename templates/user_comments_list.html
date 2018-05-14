@@ -3,37 +3,43 @@
 {% block title %}{{user.email}} User - comment list{% endblock %}
 
 {% block content %}
-<div class="jumbotron">
-  <h1>Ninja tech forum</h1>
-  <p>Welcome to Ninja Tech Forum - the best forum for tech fans. Coming soon!</p>
-</div>
-
-
-
+<br />
+<h1>- comments</h1>
+<br />
+{% if u.first_name or u.last_name %}
+<h1 class="col-md-offset-1">AUTHOR: {{u.first_name}} {{u.last_name}}</h1>
+{% else %}
+<h1 class="col-md-offset-1">AUTHOR: {{u.email}}</h1>
+{% endif %}
+<br />
+<br />
 <div class="container-fluid">
-  <table class="table table-hover">
+  <table id="user-comments-list-table" class="table table-hover">
     <thead>
       <tr class="bg-primary">
-        <th>AUTHOR</th>
         <th class="text-center">COMMENTS OF TOPIC</th>
+        <th>Comment</th>
         <th class="text-right">DATE / TIME</th>
       </tr>
     </thead>
-
     <tbody>
-
       {% for comment in comments %}
-      {% if comment.author_email == u.email %}
       <tr onclick="window.location='/topic/{{ comment.topic_id }}/details';" class="table">
-          <td class="ellipsis">{{comment.author_email}}</td>
-          <td class="ellipsis text-center">{{comment.topic_title}}</td>
-          <td class="text-right ellipsis">{{comment.created.strftime('%d-%m-%Y/%H:%M')}}</td>
+        <td class="ellipsis">{{comment.topic_title|upper}}</td>
+        <td class="ellipsis">{{comment.content}}</td>
+        <td class="text-right ellipsis">{{comment.created.strftime('%Y/%m/%d; %H:%M')}}</td>
       </tr>
-      {% endif %}
+      {% else %}
+      <p>This user has no comments yet!</p>
+      <br />
       {% endfor %}
-
     </tbody>
   </table>
+  <hr>
+  <br />
+  <div class="text-center">
+    <button class="btn btn-primary" type="button" onclick="history.back();"><spam class="h4">Back</spam></button>
+  </div>
 </div>
 
 {% endblock %}

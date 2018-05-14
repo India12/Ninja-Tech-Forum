@@ -1,3 +1,8 @@
+
+* {
+  font-size: 15px;
+}
+
 table td { cursor: pointer; }
 .ellipsis {
     max-width: 50px;
@@ -10,19 +15,19 @@ textarea {
   height: 100%
 }
 .panel-title{
-  padding-left: 10px;
-  color: green;
+  padding: 10px 10px;
   font-size: 15px;
 }
 .title-topic{
-  color: darkblue;
   font-size: 20px;
+}
+.panel-body, .panel-title, .modal-body, .modal-title  {
+   word-break:break-all
 }
 /*BUTTON*/
 .subscribe, .subscribe:visited, .subscribe:hover, .subscribe:active {
     width: 400px;
-    font-size: 30px;
-    padding: 10px;
+    height: 70px;
     color: white;
     background: lightgray no-repeat top left/5px 5px;
     -webkit-animation: mymove 5s infinite; /* Safari 4.0 - 8.0 */
@@ -31,9 +36,68 @@ textarea {
 
 /* Safari 4.0 - 8.0 */
 @-webkit-keyframes mymove {
-    50% {background: darkgrey bottom right/50px 50px;}
+    50% {background: darkgrey }
 }
 
 @keyframes mymove {
-    50% {background: darkgrey bottom right/50px 50px;}
+    50% {background: darkgrey}
+}
+.top-navbar-color a {
+  color: white;
+  text-align: right;
+}
+/* modal */
+.modal.fadedown {
+  top: -25%;
+  -webkit-transition: opacity 0.3s linear, top 0.3s ease-out;
+     -moz-transition: opacity 0.3s linear, top 0.3s ease-out;
+       -o-transition: opacity 0.3s linear, top 0.3s ease-out;
+          transition: opacity 0.3s linear, top 0.3s ease-out;
+}
+.modal.fadedown.in {
+  top: 10%;
+}
+/* footer */
+.map {
+  padding-bottom: 30px;
+  padding-top: 30px;
+  width: 100%;
+  height: 500px;
+}
+iframe {
+  border: 0;
+}
+.navbar-bottom {
+  margin-top: : 70px;
+  background-color: lightgray;
+}
+.navigacija-bottom {
+  text-align: right;
+}
+.navigacija-bottom li {
+  padding-right: 30px;
+}
+ul {
+  list-style-type: none;
+}
+#kontakt{
+  padding: 15px 15px 0px 40px;
+}
+/*show-hide text-About*/
+div.text-container {
+  margin: 0 auto;
+  width: 75%;
+}
+.hideContent {
+  overflow: hidden;
+  line-height: 1.5em;
+  height: 3em;
+}
+.showContent {
+  line-height: 1.5em;
+  height: auto;
+}
+.show-more {
+  padding: 10px 0;
+  text-align: right;
 }

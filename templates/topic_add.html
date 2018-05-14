@@ -1,8 +1,9 @@
 {% extends "base.html" %}
 {% block title %}Add new topic{% endblock title%}
 {% block content %}
+<br />
   <div class="row">
-    <div class="col-md-6">
+    <div class="col-md-10">
 
       <form method="post">
         <input type="hidden" name="csrf_token" value="{{csrf_token}}">
@@ -10,13 +11,18 @@
           <label>Title</label>
           <input type="text" class="form-control" name="title" maxlength="100" required><!--validacija se dela na frontendu in na backendu-->
         </div>
-
+        <br />
         <div class="form-group">
-          <label>Text</label>
+          <label>Content</label>
           <textarea name="text" class="form-control" rows="6" required></textarea>
         </div>
+        <br />
+        <div class="form-group">
+          <label>What is the sum of <span class="numOne"></span> and <span class="numTwo"></span> ?</label>
+          <input id="calc" name="calc" class="form-control" required>
+        </div>
 
-        <button type="submit" class="btn btn-success">Submit</button>
+        <button id="submit-button" type="submit" class="btn btn-success">Submit</button>
       </form>
     </div>
   </div>
