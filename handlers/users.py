@@ -49,6 +49,7 @@ class DeleteUserProfileHandler(BaseHandler):
 
         if user_profile.email == user.email() or users.is_current_user_admin():
             User.delete_profile(user_profile=user_profile)
+            return self.redirect(users.create_logout_url('/'))
 
         return self.redirect_to("main-page")
 
