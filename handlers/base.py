@@ -33,18 +33,16 @@ class BaseHandler(webapp2.RequestHandler):
             params["cookies"] = True
 
         user = users.get_current_user()
-        if user:
-            subscribers = User.query(User.deleted == False, User.email == user.email()).fetch()
-            for topic_subscriber in subscribers:
-                params["topic_subscriber"] = topic_subscriber
-#else:
-#params["topic_subscriber/subscribers"] = ""   '''?
+
         if user:
             if users.is_current_user_admin():
                 user.admin = True
             User.create(user.email())#
             params["user"] = user
             params["logout_url"] = users.create_logout_url('/')
+            subscribers = User.query(User.deleted == False, User.email == user.email()).fetch()
+            for topic_subscriber in subscribers:
+                params["topic_subscriber"] = topic_subscriber
         else:
             params["login_url"] = users.create_login_url('/')
 
